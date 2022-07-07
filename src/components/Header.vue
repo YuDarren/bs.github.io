@@ -1,5 +1,8 @@
 <script>
-export default {};
+import { User, Right } from "@element-plus/icons-vue";
+export default {
+  components: { User, Right },
+};
 </script>
 <template>
   <header>
@@ -13,12 +16,26 @@ export default {};
           <div class="btn">
             <router-link to="/commodity">Commodity</router-link>
           </div>
-          <div></div>
         </div>
       </div>
       <div class="head_right">
-        <div class="head_user"></div>
-        <div class="head_signout"></div>
+        <div class="head_user">
+          <div class="user_photo">
+            <el-icon><User /></el-icon>
+          </div>
+          <div class="user_info">
+            <div class="user_name">Darren Yu</div>
+            <div class="user_jobtit">Staff</div>
+          </div>
+        </div>
+        <div class="head_signout">
+          <div class="signout_btn">
+            <div class="so_photo">
+              <el-icon><Right /></el-icon>
+            </div>
+            <div class="so_name">sign out</div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -29,7 +46,7 @@ export default {};
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  margin: 0;
   .head_left {
     display: flex;
     .head_tit {
@@ -63,8 +80,22 @@ export default {};
   }
   .head_right {
     .head_user {
+      .user_photo {
+      }
+      .user_info {
+        .user_name {
+        }
+        .user_jobtit {
+        }
+      }
     }
     .head_signout {
+      .signout_btn {
+        .so_photo {
+        }
+        .so_name {
+        }
+      }
     }
   }
 }
