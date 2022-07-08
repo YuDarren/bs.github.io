@@ -8,7 +8,7 @@ export default {
   <header>
     <div class="head">
       <div class="head_left">
-        <div class="head_tit">Backend System</div>
+        <div class="head_tit"><h2>Backend System</h2></div>
         <div class="head_btns">
           <div class="btn">
             <router-link to="/">Permission</router-link>
@@ -46,14 +46,15 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0;
   .head_left {
     display: flex;
     .head_tit {
-      font-size: 36px;
-      color: #fff;
-      padding: 20px;
-      border-right: 1px solid #fff;
+      h2 {
+        font-size: 26px;
+        color: #fff;
+        border-right: 1px solid #fff;
+        padding: 0px 20px;
+      }
     }
     .head_btns {
       display: flex;
@@ -62,40 +63,81 @@ export default {
 
       .btn {
         text-transform: uppercase;
-        font-size: 20px;
+        font-size: 16px;
+        padding: 0px 10px;
 
         a {
-          padding: 30px;
+          padding: 20px;
           color: #fff;
+          border-radius: 4px;
           &.router-link-exact-active {
-            padding: 30px;
+            padding: 20px;
             background: #46a3ff;
+            border-radius: 4px;
           }
         }
-      }
-      .btn + .btn {
-        margin-left: 20px;
       }
     }
   }
   .head_right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
     .head_user {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+
       .user_photo {
+        border-left: 1px solid #fff;
+        display: flex;
+        align-items: center;
+        font-size: 48px;
+        color: #fff;
+        padding: 0px 10px 0px 20px;
       }
       .user_info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        color: #fff;
+        line-height: 1.5;
         .user_name {
+          font-size: 20px;
         }
         .user_jobtit {
+          font-size: 16px;
         }
       }
     }
     .head_signout {
+      padding: 0px 20px 0px 30px;
+      border-left: 1px solid #fff;
       .signout_btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
         .so_photo {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          border: 1px solid #fff;
+          border-radius: 50%;
+          font-size: 20px;
+          font-weight: bolder;
         }
         .so_name {
+          margin-top: 5px;
+          font-size: 16px;
+          color: #fff;
         }
       }
+    }
+    .head_user + .head_signout {
+      margin-left: 20px;
     }
   }
 }
