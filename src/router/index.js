@@ -1,12 +1,30 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Permission from "@/views/Permission.vue";
 import Commodity from "@/views/Commodity.vue";
+import Home from "@/views/Home.vue";
+import Employee from "@/views/Permission/Employee.vue";
+import Supervisor from "@/views/Permission/Supervisor.vue";
 
 const routes = [
   {
     path: "/",
+    name: "home",
+    component: Home,
+  },
+  {
+    path: "/permission",
     name: "permission",
     component: Permission,
+    children: [
+      {
+        path: "employee",
+        component: Employee,
+      },
+      {
+        path: "supervisor",
+        component: Supervisor,
+      },
+    ],
   },
   {
     path: "/commodity",

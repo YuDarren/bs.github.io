@@ -11,7 +11,7 @@ export default {
         <div class="head_tit"><h2>Backend System</h2></div>
         <div class="head_btns">
           <div class="btn">
-            <router-link to="/">Permission</router-link>
+            <router-link to="/permission">Permission</router-link>
           </div>
           <div class="btn">
             <router-link to="/commodity">Commodity</router-link>
