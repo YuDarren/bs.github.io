@@ -70,7 +70,7 @@ export default {
           padding: 20px;
           color: #fff;
           border-radius: 4px;
-          &.router-link-exact-active {
+          &.router-link-active {
             padding: 20px;
             background: #46a3ff;
             border-radius: 4px;
