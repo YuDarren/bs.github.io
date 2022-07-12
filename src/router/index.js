@@ -4,6 +4,7 @@ import Commodity from "@/views/Commodity.vue";
 import Home from "@/views/Home.vue";
 import Employee from "@/views/Permission/Employee.vue";
 import Supervisor from "@/views/Permission/Supervisor.vue";
+import AddPersonInfo from "@/components/AddPersonInfo.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: "/commodity",
     name: "commodity",
     component: Commodity,
+  },
+  {
+    path: "/addpersoninfo",
+    name: "addpersoninfo",
+    component: AddPersonInfo,
   },
   // {
   //   path: '/about',

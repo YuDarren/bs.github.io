@@ -16,29 +16,28 @@ export default {};
         <button><a href="#">新增</a></button>
       </div>
     </nav>
-
     <router-view></router-view>
   </div>
 </template>
 <style lang="scss" scoped>
 .per {
-  padding-top: 40px;
+  padding: 40px 0px;
   margin: 0 auto;
-  width: calc(100% - 360px);
+  width: calc(100% - 300px);
   max-width: 1920px;
   display: flex;
+  flex-direction: column;
   border: 1px solid black;
   .per_haeder {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: 100% auto;
     justify-content: space-between;
     padding: 10px;
-
+    margin-bottom: 20px;
     .per_btns {
       display: flex;
       align-items: center;
-
       .btn {
         display: flex;
         align-items: center;
@@ -71,7 +70,7 @@ export default {};
         background: #0275b1;
         border-radius: 4px;
         font-weight: 600;
-        border: 1px solid #0275b1;
+        border: none;
         a {
           color: #fff;
         }
