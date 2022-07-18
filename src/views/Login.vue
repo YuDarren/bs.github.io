@@ -1,5 +1,14 @@
 <script>
-export default {};
+import { onMounted } from "@vue/runtime-core";
+import { useStore } from "vuex";
+export default {
+  setup() {
+    onMounted(() => {
+      init();
+    });
+    return {};
+  },
+};
 </script>
 <template>
   <div class="login">
