@@ -5,7 +5,6 @@ import Home from "@/views/Home.vue";
 import Employee from "@/views/Permission/Employee.vue";
 import Supervisor from "@/views/Permission/Supervisor.vue";
 import AddPersonInfo from "@/components/AddPersonInfo.vue";
-import Login from "@/views/Login.vue";
 
 const routes = [
   {
@@ -13,11 +12,7 @@ const routes = [
     name: "home",
     component: Home,
   },
-  {
-    path: "/login",
-    name: "login",
-    component: Login,
-  },
+
   {
     path: "/permission",
     name: "permission",

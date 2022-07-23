@@ -1,33 +1,24 @@
 <script>
 import Header from "@/components/Header.vue";
-// import { onMounted } from "@vue/runtime-core";
-// import { useStore } from "vuex";
-import axios from "axios";
+import Login from "@/views/Login.vue";
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
+
 export default {
-  components: { Header },
+  components: { Header, Login },
   setup() {
-    axios
-      .post("http://116.241.112.119:4862/login", {
-        account: "admin",
-        pwd: "1234",
-      })
-      .then((res) => {
-        console.log(res);
-      });
-    // const store = useStore();
-    // const init = () => {
-    //   store.dispatch("handInit");
-    // };
-    // onMounted(() => {
-    //   init();
-    // });
-    return {};
+    const store = useStore();
+    const isLogin = computed(() => {
+      return store.getters.isLogin;
+    });
+    return { isLogin };
   },
 };
 </script>
 <template>
-  <Header />
-  <router-view />
+  <Login v-if="!isLogin" />
+  <Header v-if="isLogin" />
+  <router-view v-if="isLogin" />
 </template>
 
 <style lang="scss">
