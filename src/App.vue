@@ -11,7 +11,13 @@ export default {
     const isLogin = computed(() => {
       return store.getters.isLogin;
     });
+
     return { isLogin };
+  },
+  computed: {
+    onchangeIsLogin() {
+      store.commit("changeIsLogin");
+    },
   },
 };
 </script>

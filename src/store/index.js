@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { apiPostUserLogin } from "../api/api.js";
+import { apiPostUserLogin, userRequest } from "../api/api.js";
 // import state from "./state.js";
 // import actions from "./actions.js";
 // import mutations from "./mutations.js";
@@ -18,30 +18,21 @@ export default createStore({
     handLoginSubmit(context) {
       apiPostUserLogin(this.state.loginInfo).then((res) => {
         const token = res.data.token;
-        context.state.token = token;
         const bool = !context.state.isLogin;
+        localStorage.setItem("token", token);
+        context.state.token = token;
+        console.log("action.bool=>", bool);
+
         context.commit("changeIsLogin", bool);
         context.commit("updateToken", token);
-        localStorage.setItem("token", token);
-        console.log("vuex.islogin=>", this.state.isLogin);
-        console.log("vuex.token=>", token);
-        console.log("vuex.getter=>", this.getters.token);
       });
     },
-    // handSubmit = () => {
-    //   apiPostUserLogin(logininfo).then((res) => {
-    //     localStorage.setItem("token", res.data.token);
-    //     console.log(localStorage);
-    //     if (localStorage) {
-    //       alert("目前已登入");
-    //     }
-    //   });
-    // };
   },
   mutations: {
     updateLoginInfoAcc(state, account) {
       state.loginInfo.account = account;
       console.log("vuex.muacc.acc =>", account);
+      console.log("vuex.muacc.acc =>", localStorage.token);
     },
     updateLoginInfoPwd(state, pwd) {
       state.loginInfo.pwd = pwd;
@@ -53,14 +44,24 @@ export default createStore({
     },
     changeIsLogin(state, bool) {
       state.isLogin = bool;
+      if (localStorage.token) {
+        state.isLogin = true;
+      } else {
+        state.isLogin = false;
+      }
+
+      console.log("vuex.mulogin =>", bool);
     },
   },
   getters: {
     isLogin(state) {
       return state.isLogin;
     },
-    loginInfo(state) {
-      return state.loginInfo;
+    loginInfoAcc(state) {
+      return state.loginInfo.account;
+    },
+    loginInfoPwd(state) {
+      return state.loginInfo.pwd;
     },
     token(state) {
       return state.token;

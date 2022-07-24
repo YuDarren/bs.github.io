@@ -1,17 +1,9 @@
 <script>
-import { computed, onMounted, reactive } from "@vue/runtime-core";
+import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
 import { useStore } from "vuex";
+import { apiPostUserLogin, userRequest } from "../api/api.js";
 
 export default {
-  setup() {
-    const store = useStore();
-
-    const handSubmit = () => {
-      store.dispatch("handLoginSubmit");
-    };
-
-    return { handSubmit };
-  },
   computed: {
     loginInfoAcc: {
       get() {
@@ -30,7 +22,24 @@ export default {
       },
     },
   },
-  methods: {},
+  setup() {
+    const store = useStore();
+
+    const handSubmit = () => {
+      const account = store.getters.loginInfoAcc;
+      const pwd = store.getters.loginInfoPwd;
+
+      if (account === "admin" && pwd === "1234") {
+        store.dispatch("handLoginSubmit");
+      } else {
+        alert("帳號或密碼錯誤");
+        console.log("送出", pwd);
+        console.log("送出", passwd);
+      }
+    };
+
+    return { handSubmit };
+  },
 };
 </script>
 <template>
