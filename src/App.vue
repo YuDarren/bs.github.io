@@ -12,19 +12,16 @@ export default {
       return store.getters.isLogin;
     });
 
-    return { isLogin };
-  },
-  computed: {
-    onchangeIsLogin() {
-      store.commit("changeIsLogin");
-    },
+    const lacalToken = localStorage.length;
+
+    return { isLogin, lacalToken };
   },
 };
 </script>
 <template>
-  <Login v-if="!isLogin" />
-  <Header v-if="isLogin" />
-  <router-view v-if="isLogin" />
+  <Login v-if="lacalToken === 0 ? !isLogin : isLogin" />
+  <Header v-if="lacalToken === 1 ? !isLogin : isLogin" />
+  <router-view v-if="lacalToken === 1 ? !isLogin : isLogin" />
 </template>
 
 <style lang="scss">

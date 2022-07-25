@@ -1,7 +1,5 @@
 <script>
-import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
 import { useStore } from "vuex";
-import { apiPostUserLogin, userRequest } from "../api/api.js";
 
 export default {
   computed: {
@@ -106,6 +104,7 @@ export default {
         }
       }
       .login_btn {
+        cursor: pointer;
         background: #fff;
         font-weight: 700;
         color: #000;

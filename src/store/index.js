@@ -12,44 +12,47 @@ export default createStore({
       account: "",
       pwd: "",
     },
-    token: "",
+    token: localStorage.token,
   },
   actions: {
     handLoginSubmit(context) {
       apiPostUserLogin(this.state.loginInfo).then((res) => {
         const token = res.data.token;
         const bool = !context.state.isLogin;
-        localStorage.setItem("token", token);
-        context.state.token = token;
         console.log("action.bool=>", bool);
-
         context.commit("changeIsLogin", bool);
-        context.commit("updateToken", token);
+        context.commit("setToken", token);
+        console.log("vuex.mutoken =>", localStorage.length);
       });
+    },
+    handSignOutSubmit(context) {
+      const bool = !context.state.isLogin;
+      context.commit("removeToken");
+      context.commit("changeIsLogin", bool);
     },
   },
   mutations: {
     updateLoginInfoAcc(state, account) {
       state.loginInfo.account = account;
       console.log("vuex.muacc.acc =>", account);
-      console.log("vuex.muacc.acc =>", localStorage.token);
+      console.log("vuex.muacc.acc =>", localStorage.length);
     },
     updateLoginInfoPwd(state, pwd) {
       state.loginInfo.pwd = pwd;
       console.log("vuex.mupwd.pwd =>", pwd);
     },
-    updateToken(state, token) {
+    setToken(state, token) {
+      localStorage.setItem("token", token);
       state.token = token;
       console.log("vuex.mutoken =>", token);
     },
+    removeToken(state, token) {
+      localStorage.removeItem("token");
+      state.token = token;
+      console.log("vuex.mutoken =>", localStorage.length);
+    },
     changeIsLogin(state, bool) {
       state.isLogin = bool;
-      if (localStorage.token) {
-        state.isLogin = true;
-      } else {
-        state.isLogin = false;
-      }
-
       console.log("vuex.mulogin =>", bool);
     },
   },

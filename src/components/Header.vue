@@ -1,7 +1,15 @@
 <script>
 import { User, Right } from "@element-plus/icons-vue";
+import { useStore } from "vuex";
 export default {
   components: { User, Right },
+  setup() {
+    const store = useStore();
+    const handSignOutBtn = () => {
+      store.dispatch("handSignOutSubmit");
+    };
+    return { handSignOutBtn };
+  },
 };
 </script>
 <template>
@@ -29,7 +37,7 @@ export default {
           </div>
         </div>
         <div class="head_signout">
-          <div class="signout_btn">
+          <div class="signout_btn" @click="handSignOutBtn">
             <div class="so_photo">
               <el-icon><Right /></el-icon>
             </div>
