@@ -2,10 +2,17 @@
 import { User, Right } from "@element-plus/icons-vue";
 import { useStore } from "vuex";
 import { apiPostUserLogin, apiGetUserTypeOne } from "../api/api.js";
+import { computed } from "@vue/runtime-core";
 export default {
   components: { User, Right },
   setup() {
     const store = useStore();
+    const userName = computed(() => {
+      return store.getters.userInfoUsername;
+    });
+    const userType = computed(() => {
+      return store.getters.userInfoUsertype;
+    });
     const handgetUserInfoBtn = () => {
       // store.dispatch("getUserInfo");
       apiGetUserTypeOne({ Authorization: store.getters.token });
@@ -16,7 +23,7 @@ export default {
     const handSignOutBtn = () => {
       store.dispatch("handSignOutSubmit");
     };
-    return { handSignOutBtn, handgetUserInfoBtn, handlog };
+    return { handSignOutBtn, handgetUserInfoBtn, handlog, userName, userType };
   },
 };
 </script>
@@ -40,8 +47,8 @@ export default {
             <el-icon><User /></el-icon>
           </div>
           <div class="user_info">
-            <div class="user_name">Darren Yu</div>
-            <div class="user_jobtit">Staff</div>
+            <div class="user_name">{{ userName }}</div>
+            <div class="user_jobtit">{{ userType }}</div>
           </div>
         </div>
         <div class="head_signout">

@@ -12,13 +12,20 @@ export default createStore({
       account: "",
       pwd: "",
     },
+    userInfo: {
+      username: "",
+      type: "",
+    },
     token: "",
   },
   actions: {
     handLoginSubmit(context) {
       apiPostUserLogin(context.state.loginInfo).then((res) => {
         const token = res.data.token;
+        const username = res.data.username;
+        const type = res.data.type;
         const bool = !context.state.isLogin;
+        context.commit("updateUserInfo", { username, type });
         context.commit("changeIsLogin", bool);
         context.commit("setToken", token);
       });
@@ -36,7 +43,7 @@ export default createStore({
     },
     handlog(context) {
       apiPostUserLogin(this.state.loginInfo).then((res) => {
-        console.log("vuex.acions=>", res);
+        console.log("vuex.acions=>", this.state.userInfo);
         console.log("vuex.acions=>", res.status);
         console.log("vuex.acions.loginInfo=>", this.state.loginInfo);
       });
@@ -62,6 +69,24 @@ export default createStore({
       state.loginInfo.pwd = pwd;
       console.log("vuex.mupwd.pwd =>", pwd);
     },
+    updateUserInfo(state, { username, type }) {
+      state.userInfo.username = username;
+      state.userInfo.type = type;
+      switch (state.userInfo.type) {
+        case 0:
+          state.userInfo.type = "管理員";
+          break;
+        case 1:
+          state.userInfo.type = "業務主管";
+          break;
+        case 2:
+          state.userInfo.type = "業務";
+          break;
+        default:
+          alert("沒有符合的條件");
+      }
+      console.log("vuex.mutations.user=>", this.state.userInfo);
+    },
     setToken(state, token) {
       localStorage.setItem("token", token);
       state.token = token;
@@ -86,6 +111,12 @@ export default createStore({
     },
     loginInfoPwd(state) {
       return state.loginInfo.pwd;
+    },
+    userInfoUsername(state) {
+      return state.userInfo.username;
+    },
+    userInfoUsertype(state) {
+      return state.userInfo.type;
     },
     token(state) {
       return state.token;
