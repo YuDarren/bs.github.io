@@ -20,20 +20,11 @@ export default {
       },
     },
   },
+
   setup() {
     const store = useStore();
-
     const handSubmit = () => {
-      const account = store.getters.loginInfoAcc;
-      const pwd = store.getters.loginInfoPwd;
-
-      if (account === "admin" && pwd === "1234") {
-        store.dispatch("handLoginSubmit");
-      } else {
-        alert("帳號或密碼錯誤");
-        console.log("送出", pwd);
-        console.log("送出", passwd);
-      }
+      store.dispatch("handLoginSubmit");
     };
 
     return { handSubmit };
@@ -47,7 +38,12 @@ export default {
       <div class="login_info">
         <div class="input-box">
           <p>帳號 :</p>
-          <input type="text" placeholder="輸入帳號" v-model="loginInfoAcc" />
+          <input
+            type="text"
+            placeholder="輸入帳號"
+            v-model="loginInfoAcc"
+            autofocus
+          />
         </div>
         <div class="input-box">
           <p>密碼 :</p>

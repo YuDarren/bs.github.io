@@ -11,17 +11,19 @@ export default {
     const isLogin = computed(() => {
       return store.getters.isLogin;
     });
+    const token = localStorage.token;
 
-    const lacalToken = localStorage.length;
-
-    return { isLogin, lacalToken };
+    return { isLogin, token };
+  },
+  mounted() {
+    console.log("router: ", this.$router.push("/commodity"));
   },
 };
 </script>
 <template>
-  <Login v-if="lacalToken === 0 ? !isLogin : isLogin" />
-  <Header v-if="lacalToken === 1 ? !isLogin : isLogin" />
-  <router-view v-if="lacalToken === 1 ? !isLogin : isLogin" />
+  <Login v-if="token ? isLogin : !isLogin" />
+  <Header v-if="token ? !isLogin : isLogin" />
+  <router-view v-if="token ? !isLogin : isLogin" />
 </template>
 
 <style lang="scss">
