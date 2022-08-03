@@ -1,7 +1,6 @@
 <script>
 import { User, Right } from "@element-plus/icons-vue";
 import { useStore } from "vuex";
-import { apiPostUserLogin, apiGetUserTypeOne } from "../api/api.js";
 import { computed } from "@vue/runtime-core";
 export default {
   components: { User, Right },
@@ -13,17 +12,14 @@ export default {
     const userType = computed(() => {
       return store.getters.userInfoUsertype;
     });
-    const handgetUserInfoBtn = () => {
-      // store.dispatch("getUserInfo");
-      apiGetUserTypeOne({ Authorization: store.getters.token });
-    };
-    const handlog = () => {
-      store.dispatch("handlog");
-    };
     const handSignOutBtn = () => {
       store.dispatch("handSignOutSubmit");
     };
-    return { handSignOutBtn, handgetUserInfoBtn, handlog, userName, userType };
+    return {
+      handSignOutBtn,
+      userName,
+      userType,
+    };
   },
 };
 </script>
@@ -33,10 +29,10 @@ export default {
       <div class="head_left">
         <div class="head_tit"><h2>Backend System</h2></div>
         <div class="head_btns">
-          <div class="btn" @click="handgetUserInfoBtn">
+          <div class="btn">
             <router-link to="/permission">Permission</router-link>
           </div>
-          <div class="btn" @click="handlog">
+          <div class="btn">
             <router-link to="/commodity">Commodity</router-link>
           </div>
         </div>

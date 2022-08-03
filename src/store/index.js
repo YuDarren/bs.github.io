@@ -1,5 +1,9 @@
 import { createStore } from "vuex";
-import { apiPostUserLogin, apiGetUserType } from "../api/api.js";
+import {
+  apiPostUserLogin,
+  apiGetUserTypeOne,
+  apiGetUserTypeTwo,
+} from "../api/api.js";
 // import state from "./state.js";
 // import actions from "./actions.js";
 // import mutations from "./mutations.js";
@@ -16,6 +20,27 @@ export default createStore({
       username: "",
       type: "",
     },
+    personInfoOne: {
+      personData: {
+        id: "",
+        account: "",
+        username: "",
+        type: "",
+        addTime: "",
+        updateTime: "",
+      },
+    },
+    personInfoTwo: {
+      personData: {
+        id: "",
+        account: "",
+        username: "",
+        type: "",
+        addTime: "",
+        updateTime: "",
+      },
+    },
+
     token: "",
   },
   actions: {
@@ -25,9 +50,10 @@ export default createStore({
         const username = res.data.username;
         const type = res.data.type;
         const bool = !context.state.isLogin;
-        context.commit("updateUserInfo", { username, type });
+        context.commit("getLoginUserInfo", { username, type });
         context.commit("changeIsLogin", bool);
         context.commit("setToken", token);
+        console.log("vuex.actions.login", res);
       });
     },
     handSignOutSubmit(context) {
@@ -39,26 +65,27 @@ export default createStore({
       context.commit("updateLoginInfoAcc", account);
       context.commit("updateLoginInfoPwd", pwd);
       context.commit("changeIsLogin", bool);
-      console.log("vuex.mutoken =>", localStorage.token);
     },
-    handlog(context) {
-      apiPostUserLogin(this.state.loginInfo).then((res) => {
-        console.log("vuex.acions=>", this.state.userInfo);
-        console.log("vuex.acions=>", res.status);
-        console.log("vuex.acions.loginInfo=>", this.state.loginInfo);
+    getUserInfoOne(context) {
+      apiGetUserTypeOne({
+        headers: { Authorization: localStorage.token },
+      }).then((res) => {
+        const arr = res.data;
+        context.commit("updatePersonInfoOne", arr);
+        console.log("vuex.actions.getUserone.res", res.data);
+        console.log("vuex.actions.getUserone.arr", arr);
       });
     },
-    // getUserInfo(context) {
-    //   const token = context.state.token;
-
-    //   apiGetUserType({ value: token }).then((res) => {});
-    // },
-    cleanLoginInfo({ commit }) {
-      const account = "";
-      const pwd = "";
-      commit("updateLoginInfoAcc", account);
-      commit("updateLoginInfoPwd", pwd);
+    getUserInfoTwo(context) {
+      apiGetUserTypeTwo({
+        headers: { Authorization: localStorage.token },
+      }).then((res) => {
+        const arr = res.data;
+        context.commit("updatePersonInfoTwo", arr);
+        console.log("vuex.actions.getUserTwo", res);
+      });
     },
+    addUserInfo(context) {},
   },
   mutations: {
     updateLoginInfoAcc(state, account) {
@@ -69,7 +96,7 @@ export default createStore({
       state.loginInfo.pwd = pwd;
       console.log("vuex.mupwd.pwd =>", pwd);
     },
-    updateUserInfo(state, { username, type }) {
+    getLoginUserInfo(state, { username, type }) {
       state.userInfo.username = username;
       state.userInfo.type = type;
       switch (state.userInfo.type) {
@@ -82,10 +109,27 @@ export default createStore({
         case 2:
           state.userInfo.type = "業務";
           break;
-        default:
-          alert("沒有符合的條件");
       }
-      console.log("vuex.mutations.user=>", this.state.userInfo);
+      console.log("vuex.mutations.user=>");
+    },
+    updatePersonInfoOne(state, payload) {
+      state.personInfoOne.personData = payload;
+      // switch (state.personInfoOne.personData.type) {
+      //   case 0:
+      //     state.personInfoOne.personData.type = "管理員";
+      //     break;
+      //   case 1:
+      //     state.personInfoOne.personData.type = "業務主管";
+      //     break;
+      //   case 2:
+      //     state.personInfoOne.personData.type = "業務";
+      //     break;
+      // }
+      console.log("vuex.muper.payload =>", payload);
+    },
+    updatePersonInfoTwo(state, payload) {
+      state.personInfoTwo.personData = payload;
+      console.log("vuex.muper.payload =>", payload);
     },
     setToken(state, token) {
       localStorage.setItem("token", token);
@@ -117,6 +161,12 @@ export default createStore({
     },
     userInfoUsertype(state) {
       return state.userInfo.type;
+    },
+    personInfoOne(state) {
+      return state.personInfoOne.personData;
+    },
+    personInfoTwo(state) {
+      return state.personInfoTwo.personData;
     },
     token(state) {
       return state.token;

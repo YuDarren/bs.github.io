@@ -32,5 +32,5 @@ export const apiPostUserLogin = (data) => userRequest.post("/login", data);
 // 使用者 相關 api
 export const apiGetUserTypeOne = (token) => userRequest.get("/users/1", token);
 export const apiGetUserTypeTwo = (token) => userRequest.get("/users/2", token);
-export const apiPostAddUser = (data) => userRequest.post("/users", data);
+export const apiPostAddUser = (token) => userRequest.post("/users", token);
 export const apiPutRenewUser = () => userRequest.put("/users{id}");

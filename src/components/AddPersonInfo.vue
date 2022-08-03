@@ -5,17 +5,17 @@ export default {};
   <div class="add_window">
     <div class="add_tit">新增人事資料</div>
     <div class="add_con">
-      <div class="add_name">
+      <div class="add_id">
+        員工編號: <input type="text" placeholder="輸入員工編號" />
+      </div>
+      <div class="add_username">
         姓名: <input type="text" placeholder="輸入姓名" />
       </div>
-      <div class="add_jobtit">
+      <div class="add_type">
         職位: <input type="text" placeholder="輸入職位" />
       </div>
-      <div class="add_phone">
-        手機號碼: <input type="text" placeholder="輸入手機號碼" />
-      </div>
-      <div class="add_email">
-        電子聯絡信箱: <input type="text" placeholder="輸入e-mail" />
+      <div class="add_account">
+        使用者帳號: <input type="text" placeholder="輸入使用者帳號" />
       </div>
     </div>
     <div class="add_btns"></div>

@@ -1,12 +1,27 @@
 <script>
-export default {};
+import { onMounted } from "@vue/runtime-core";
+import { useStore } from "vuex";
+export default {
+  setup() {
+    const store = useStore();
+    const personnelList = store.getters.personInfoOne;
+    const handgetUserInfoOne = () => {
+      store.dispatch("getUserInfoOne");
+    };
+
+    onMounted(() => {
+      handgetUserInfoOne();
+    });
+    return { personnelList };
+  },
+};
 </script>
 <template>
-  <div class="userinfo">
-    <div class="name">姓名:王大明</div>
-    <div class="jobtit">職位:業務主管</div>
-    <div class="phone">手機號碼:0900-111-222</div>
-    <div class="email">電子郵件:testnumber1@gmail.com</div>
+  <div class="userinfo" v-for="item in personnelList" :key="item.id">
+    <div class="id">員工編號:{{ item.id }}</div>
+    <div class="username">姓名:{{ item.username }}</div>
+    <div class="type">職位:{{ item.type }}</div>
+    <div class="account">帳號:{{ item.account }}</div>
   </div>
 </template>
 <style lang="scss" scoped>

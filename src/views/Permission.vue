@@ -1,5 +1,16 @@
 <script>
-export default {};
+import { onMounted } from "@vue/runtime-core";
+import { useStore } from "vuex";
+import AddPersonInfo from "@/components/AddPersonInfo.vue";
+export default {
+  components: { AddPersonInfo },
+  setup() {
+    const store = useStore();
+
+    onMounted(() => {});
+    return {};
+  },
+};
 </script>
 <template>
   <div class="per">
@@ -16,6 +27,7 @@ export default {};
         <button><a href="#">新增</a></button>
       </div>
     </nav>
+    <AddPersonInfo />
     <router-view></router-view>
   </div>
 </template>
