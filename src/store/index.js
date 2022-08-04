@@ -3,6 +3,7 @@ import {
   apiPostUserLogin,
   apiGetUserTypeOne,
   apiGetUserTypeTwo,
+  apiPostAddUser,
 } from "../api/api.js";
 // import state from "./state.js";
 // import actions from "./actions.js";
@@ -12,6 +13,7 @@ import {
 export default createStore({
   state: {
     isLogin: false,
+    isAddInfo: false,
     loginInfo: {
       account: "",
       pwd: "",
@@ -40,7 +42,12 @@ export default createStore({
         updateTime: "",
       },
     },
-
+    addPersonInfo: {
+      account: "",
+      pwd: "",
+      username: "",
+      type: 0,
+    },
     token: "",
   },
   actions: {
@@ -85,7 +92,13 @@ export default createStore({
         console.log("vuex.actions.getUserTwo", res);
       });
     },
-    addUserInfo(context) {},
+    addUserInfo(context) {
+      apiPostAddUser({
+        headers: { Authorization: localStorage.token },
+      }).then((res) => {
+        console.log(res);
+      });
+    },
   },
   mutations: {
     updateLoginInfoAcc(state, account) {
@@ -149,6 +162,9 @@ export default createStore({
   getters: {
     isLogin(state) {
       return state.isLogin;
+    },
+    isAddInfo(state) {
+      return state.isAddInfo;
     },
     loginInfoAcc(state) {
       return state.loginInfo.account;

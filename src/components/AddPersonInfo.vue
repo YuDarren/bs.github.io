@@ -1,5 +1,10 @@
 <script>
-export default {};
+export default {
+  components: {},
+  setup() {
+    return {};
+  },
+};
 </script>
 <template>
   <div class="add_block">
@@ -7,19 +12,45 @@ export default {};
       <div class="add_tit">新增人事資料</div>
       <div class="add_con">
         <div class="add_input">
-          新增帳號: <input type="text" placeholder="輸入使用者帳號" />
+          新增帳號:<el-input
+            v-model="input"
+            type="text"
+            placeholder="輸入使用者帳號"
+            clearable
+          />
         </div>
         <div class="add_input">
-          新增密碼: <input type="text" placeholder="輸入使用者密碼" />
+          新增密碼:
+          <el-input
+            v-model="input"
+            type="text"
+            placeholder="輸入使用者密碼"
+            clearable
+          />
         </div>
         <div class="add_input">
-          新增姓名: <input type="text" placeholder="輸入姓名" />
+          新增姓名:
+          <el-input
+            v-model="input"
+            type="text"
+            placeholder="輸入姓名"
+            clearable
+          />
         </div>
         <div class="add_input">
-          新增職位: <input type="text" placeholder="輸入職位" />
+          新增職位:
+          <el-input
+            v-model="input"
+            type="text"
+            placeholder="輸入職位"
+            clearable
+          />
         </div>
       </div>
-      <div class="add_btns"></div>
+      <div class="add_btns">
+        <el-button type="info" plain>確定</el-button>
+        <el-button type="info" plain>取消</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -36,8 +67,8 @@ export default {};
   z-index: 998;
   backdrop-filter: blur(5px);
   .add_window {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 500px;
     background: #d0d0d0;
     border: 2px solid #000000;
     .add_tit {
