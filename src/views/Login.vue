@@ -33,12 +33,12 @@ export default {
 </script>
 <template>
   <div class="page">
-    <div class="login">
+    <form class="login" @keyup.enter="handSubmit">
       <div class="login_tit">歡迎使用後台系統</div>
       <div class="login_info">
         <div class="input-box">
           <p>帳號 :</p>
-          <input
+          <el-input
             type="text"
             placeholder="輸入帳號"
             v-model="loginInfoAcc"
@@ -47,11 +47,11 @@ export default {
         </div>
         <div class="input-box">
           <p>密碼 :</p>
-          <input type="text" placeholder="輸入密碼" v-model="loginInfoPwd" />
+          <el-input type="text" placeholder="輸入密碼" v-model="loginInfoPwd" />
         </div>
-        <a class="login_btn" @click="handSubmit">送出</a>
+        <el-button type="primary" @click="handSubmit">送出</el-button>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -66,7 +66,7 @@ export default {
     width: 300px;
     height: 300px;
     border-radius: 10px;
-    padding: 10px;
+    padding: 20px;
     line-height: 1.5;
     display: flex;
     flex-direction: column;
@@ -76,9 +76,10 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       color: #fff;
+      margin-bottom: 10px;
     }
     .login_info {
       color: #fff;
@@ -86,26 +87,27 @@ export default {
 
       .input-box {
         width: 100% auto;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         p {
-          width: 100% auto;
+          width: 100%;
           font-size: 16px;
           font-weight: 700;
           margin: 10px 0px;
         }
-        input {
-          width: 100% auto;
+        .el-input {
+          width: 100%;
           font-size: 16px;
-          outline: none;
         }
       }
-      .login_btn {
-        cursor: pointer;
+      .input-box + .el-button {
+        margin-top: 10px;
+      }
+      .el-button {
         background: #fff;
         font-weight: 700;
         color: #000;
         border: 2px solid #000;
-        width: 100% auto;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;

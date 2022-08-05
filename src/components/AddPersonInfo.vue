@@ -1,57 +1,92 @@
 <script>
+import { useStore } from "vuex";
 export default {
   components: {},
+  computed: {
+    AddPersonInfoAcc: {
+      get() {
+        return this.$store.state.addPersonInfo.account;
+      },
+      set(value) {
+        this.$store.commit("AddPersonInfoAcc", value);
+      },
+    },
+    AddPersonInfoPwd: {
+      get() {
+        return this.$store.state.addPersonInfo.pwd;
+      },
+      set(value) {
+        this.$store.commit("AddPersonInfoPwd", value);
+      },
+    },
+    AddPersonInfoUsername: {
+      get() {
+        return this.$store.state.addPersonInfo.username;
+      },
+      set(value) {
+        this.$store.commit("AddPersonInfoUsername", value);
+      },
+    },
+    AddPersonInfo: {
+      get() {
+        return this.$store.state.addPersonInfo.account;
+      },
+      set(value) {
+        this.$store.commit("AddPersonInfo", value);
+      },
+    },
+  },
   setup() {
-    return {};
+    const store = useStore();
+    const isAddInfoBtn = () => {
+      store.dispatch("handAddInfoAction");
+    };
+    return { isAddInfoBtn };
   },
 };
 </script>
 <template>
   <div class="add_block">
-    <div class="add_window">
+    <form class="add_window">
       <div class="add_tit">新增人事資料</div>
       <div class="add_con">
         <div class="add_input">
           新增帳號:<el-input
-            v-model="input"
+            v-model="AddPersonInfoAcc"
             type="text"
             placeholder="輸入使用者帳號"
-            clearable
           />
         </div>
         <div class="add_input">
           新增密碼:
           <el-input
-            v-model="input"
+            v-model="AddPersonInfoPwd"
             type="text"
             placeholder="輸入使用者密碼"
-            clearable
           />
         </div>
         <div class="add_input">
           新增姓名:
           <el-input
-            v-model="input"
+            v-model="AddPersonInfoUsername"
             type="text"
             placeholder="輸入姓名"
-            clearable
           />
         </div>
         <div class="add_input">
           新增職位:
           <el-input
-            v-model="input"
+            v-model="AddPersonInfoUsername"
             type="text"
             placeholder="輸入職位"
-            clearable
           />
         </div>
       </div>
       <div class="add_btns">
         <el-button type="info" plain>確定</el-button>
-        <el-button type="info" plain>取消</el-button>
+        <el-button type="info" plain @click="isAddInfoBtn">取消</el-button>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 <style lang="scss" scoped>
@@ -68,7 +103,7 @@ export default {
   backdrop-filter: blur(5px);
   .add_window {
     width: 400px;
-    height: 500px;
+    height: 450px;
     background: #d0d0d0;
     border: 2px solid #000000;
     .add_tit {
@@ -93,6 +128,10 @@ export default {
       }
     }
     .add_btns {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
     }
   }
 }

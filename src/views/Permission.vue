@@ -1,14 +1,19 @@
 <script>
-import { onMounted } from "@vue/runtime-core";
+import { computed, onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import AddPersonInfo from "@/components/AddPersonInfo.vue";
 export default {
   components: { AddPersonInfo },
   setup() {
     const store = useStore();
-
+    const isAddInfo = computed(() => {
+      return store.getters.isAddInfo;
+    });
+    const isAddInfoBtn = () => {
+      store.dispatch("handAddInfoAction");
+    };
     onMounted(() => {});
-    return {};
+    return { isAddInfo, isAddInfoBtn };
   },
 };
 </script>
@@ -24,10 +29,10 @@ export default {
         </div>
       </div>
       <div class="addinfo_btn">
-        <button><a href="#">新增</a></button>
+        <button><a href="#" @click="isAddInfoBtn">新增</a></button>
       </div>
     </nav>
-    <AddPersonInfo />
+    <AddPersonInfo v-if="isAddInfo" />
     <router-view></router-view>
   </div>
 </template>

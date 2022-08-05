@@ -73,6 +73,10 @@ export default createStore({
       context.commit("updateLoginInfoPwd", pwd);
       context.commit("changeIsLogin", bool);
     },
+    handAddInfoAction(context) {
+      const bool = !context.state.isAddInfo;
+      context.commit("changeIsAddInfo", bool);
+    },
     getUserInfoOne(context) {
       apiGetUserTypeOne({
         headers: { Authorization: localStorage.token },
@@ -144,6 +148,22 @@ export default createStore({
       state.personInfoTwo.personData = payload;
       console.log("vuex.muper.payload =>", payload);
     },
+    AddPersonInfoAcc(state, account) {
+      state.addPersonInfo.account = account;
+      console.log("vuex.add.account =>", state.addPersonInfo.account);
+    },
+    AddPersonInfoPwd(state, pwd) {
+      state.addPersonInfo.pwd = pwd;
+      console.log("vuex.add.account =>", state.addPersonInfo.pwd);
+    },
+    AddPersonInfoUsername(state, username) {
+      state.addPersonInfo.username = username;
+      console.log("vuex.add.account =>", state.addPersonInfo.username);
+    },
+    AddPersonInfoAcc(state, account) {
+      state.addPersonInfo.account = account;
+      console.log("vuex.add.account =>", state.addPersonInfo.account);
+    },
     setToken(state, token) {
       localStorage.setItem("token", token);
       state.token = token;
@@ -156,6 +176,10 @@ export default createStore({
     },
     changeIsLogin(state, bool) {
       state.isLogin = bool;
+      console.log("vuex.mulogin =>", bool);
+    },
+    changeIsAddInfo(state, bool) {
+      state.isAddInfo = bool;
       console.log("vuex.mulogin =>", bool);
     },
   },
