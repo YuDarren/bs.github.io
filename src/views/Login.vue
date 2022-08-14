@@ -1,11 +1,17 @@
 <script>
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
   computed: {
     loginInfoAcc: {
       get() {
-        return this.$store.state.loginInfo.account;
+        const reg = /^[a-zA-Z0-9]*$/;
+        if (!reg.test(this.$store.state.loginInfo.account)) {
+          alert("請輸入英文字母或數字");
+        } else {
+          return this.$store.state.loginInfo.account;
+        }
       },
       set(value) {
         this.$store.commit("updateLoginInfoAcc", value);
@@ -13,7 +19,12 @@ export default {
     },
     loginInfoPwd: {
       get() {
-        return this.$store.state.loginInfo.pwd;
+        const reg = /^[a-zA-Z0-9]*$/;
+        if (!reg.test(this.$store.state.loginInfo.pwd)) {
+          alert("請輸入英文字母或數字");
+        } else {
+          return this.$store.state.loginInfo.pwd;
+        }
       },
       set(value) {
         this.$store.commit("updateLoginInfoPwd", value);
@@ -23,8 +34,10 @@ export default {
 
   setup() {
     const store = useStore();
+    const router = useRouter();
     const handSubmit = () => {
       store.dispatch("handLoginSubmit");
+      router.push("/permission");
     };
 
     return { handSubmit };
@@ -40,6 +53,7 @@ export default {
           <p>帳號 :</p>
           <el-input
             type="text"
+            maxlength="8"
             placeholder="輸入帳號"
             v-model="loginInfoAcc"
             autofocus
@@ -47,7 +61,12 @@ export default {
         </div>
         <div class="input-box">
           <p>密碼 :</p>
-          <el-input type="text" placeholder="輸入密碼" v-model="loginInfoPwd" />
+          <el-input
+            type="text"
+            maxlength="8"
+            placeholder="輸入密碼"
+            v-model="loginInfoPwd"
+          />
         </div>
         <el-button type="primary" @click="handSubmit">送出</el-button>
       </div>

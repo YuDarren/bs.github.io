@@ -1,18 +1,16 @@
 <script>
-import { onMounted } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import { useStore } from "vuex";
+import { Type } from "../../constants";
 export default {
   setup() {
+    const typeConst = Type;
     const store = useStore();
-    const personnelList = store.getters.personInfoOne;
-    const handgetUserInfoOne = () => {
-      store.dispatch("getUserInfoOne");
-    };
 
-    onMounted(() => {
-      handgetUserInfoOne();
-    });
-    return { personnelList };
+    return {
+      personnelList: computed(() => store.getters.personInfoOne),
+      typeConst,
+    };
   },
 };
 </script>
@@ -20,7 +18,7 @@ export default {
   <div class="userinfo" v-for="item in personnelList" :key="item.id">
     <div class="id">員工編號:{{ item.id }}</div>
     <div class="username">姓名:{{ item.username }}</div>
-    <div class="type">職位:{{ item.type }}</div>
+    <div class="type">職位:{{ typeConst[item.type] }}</div>
     <div class="account">帳號:{{ item.account }}</div>
   </div>
 </template>

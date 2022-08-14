@@ -20,6 +20,7 @@ userRequest.interceptors.response.use(
       alert("帳號或密碼不得為空");
     } else if (error.response.status != 200) {
       store.dispatch("handSignOutSubmit");
+      store.dispatch("handAddInfoAction");
     }
 
     return Promise.reject(error);
@@ -32,5 +33,6 @@ export const apiPostUserLogin = (data) => userRequest.post("/login", data);
 // 使用者 相關 api
 export const apiGetUserTypeOne = (token) => userRequest.get("/users/1", token);
 export const apiGetUserTypeTwo = (token) => userRequest.get("/users/2", token);
-export const apiPostAddUser = (token) => userRequest.post("/users", token);
+export const apiPostAddUser = (data, token) =>
+  userRequest.post("/users", data, token);
 export const apiPutRenewUser = () => userRequest.put("/users{id}");

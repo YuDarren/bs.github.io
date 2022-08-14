@@ -1,17 +1,14 @@
 <script>
 import { User, Right } from "@element-plus/icons-vue";
 import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
+import { Type } from "../constants";
 export default {
   components: { User, Right },
   setup() {
     const store = useStore();
-    const userName = computed(() => {
-      return store.getters.userInfoUsername;
-    });
-    const userType = computed(() => {
-      return store.getters.userInfoUsertype;
-    });
+    const typeConst = Type;
+    const userName = localStorage.username;
+    const userType = localStorage.type;
     const handSignOutBtn = () => {
       store.dispatch("handSignOutSubmit");
     };
@@ -19,6 +16,7 @@ export default {
       handSignOutBtn,
       userName,
       userType,
+      typeConst,
     };
   },
 };
@@ -44,7 +42,7 @@ export default {
           </div>
           <div class="user_info">
             <div class="user_name">{{ userName }}</div>
-            <div class="user_jobtit">{{ userType }}</div>
+            <div class="user_jobtit">{{ typeConst[userType] }}</div>
           </div>
         </div>
         <div class="head_signout">

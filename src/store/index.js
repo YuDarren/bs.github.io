@@ -57,24 +57,46 @@ export default createStore({
         const username = res.data.username;
         const type = res.data.type;
         const bool = !context.state.isLogin;
-        context.commit("getLoginUserInfo", { username, type });
+        context.commit("setUserInfo", { username, type });
         context.commit("changeIsLogin", bool);
         context.commit("setToken", token);
-        console.log("vuex.actions.login", res);
+        // console.log("vuex.actions.login", res);
       });
     },
     handSignOutSubmit(context) {
       const bool = !context.state.isLogin;
-      const token = context.state.token;
       const account = "";
       const pwd = "";
-      context.commit("removeToken", token);
+      context.commit("clearLocalStorage");
       context.commit("updateLoginInfoAcc", account);
       context.commit("updateLoginInfoPwd", pwd);
       context.commit("changeIsLogin", bool);
     },
     handAddInfoAction(context) {
       const bool = !context.state.isAddInfo;
+      const account = "";
+      const pwd = "";
+      const username = "";
+      const type = null;
+      context.commit("AddPersonInfoAcc", account);
+      context.commit("AddPersonInfoPwd", pwd);
+      context.commit("AddPersonInfoUsername", username);
+      context.commit("AddPersonInfoType", type);
+      context.commit("changeIsAddInfo", bool);
+    },
+    handAddUserInfo(context) {
+      apiPostAddUser(this.state.addPersonInfo, {
+        headers: { Authorization: localStorage.token },
+      }).then((res) => {});
+      const bool = !context.state.isAddInfo;
+      const account = "";
+      const pwd = "";
+      const username = "";
+      const type = null;
+      context.commit("AddPersonInfoAcc", account);
+      context.commit("AddPersonInfoPwd", pwd);
+      context.commit("AddPersonInfoUsername", username);
+      context.commit("AddPersonInfoType", type);
       context.commit("changeIsAddInfo", bool);
     },
     getUserInfoOne(context) {
@@ -83,8 +105,6 @@ export default createStore({
       }).then((res) => {
         const arr = res.data;
         context.commit("updatePersonInfoOne", arr);
-        console.log("vuex.actions.getUserone.res", res.data);
-        console.log("vuex.actions.getUserone.arr", arr);
       });
     },
     getUserInfoTwo(context) {
@@ -93,14 +113,6 @@ export default createStore({
       }).then((res) => {
         const arr = res.data;
         context.commit("updatePersonInfoTwo", arr);
-        console.log("vuex.actions.getUserTwo", res);
-      });
-    },
-    addUserInfo(context) {
-      apiPostAddUser({
-        headers: { Authorization: localStorage.token },
-      }).then((res) => {
-        console.log(res);
       });
     },
   },
@@ -113,35 +125,8 @@ export default createStore({
       state.loginInfo.pwd = pwd;
       console.log("vuex.mupwd.pwd =>", pwd);
     },
-    getLoginUserInfo(state, { username, type }) {
-      state.userInfo.username = username;
-      state.userInfo.type = type;
-      switch (state.userInfo.type) {
-        case 0:
-          state.userInfo.type = "管理員";
-          break;
-        case 1:
-          state.userInfo.type = "業務主管";
-          break;
-        case 2:
-          state.userInfo.type = "業務";
-          break;
-      }
-      console.log("vuex.mutations.user=>");
-    },
     updatePersonInfoOne(state, payload) {
       state.personInfoOne.personData = payload;
-      // switch (state.personInfoOne.personData.type) {
-      //   case 0:
-      //     state.personInfoOne.personData.type = "管理員";
-      //     break;
-      //   case 1:
-      //     state.personInfoOne.personData.type = "業務主管";
-      //     break;
-      //   case 2:
-      //     state.personInfoOne.personData.type = "業務";
-      //     break;
-      // }
       console.log("vuex.muper.payload =>", payload);
     },
     updatePersonInfoTwo(state, payload) {
@@ -154,25 +139,34 @@ export default createStore({
     },
     AddPersonInfoPwd(state, pwd) {
       state.addPersonInfo.pwd = pwd;
-      console.log("vuex.add.account =>", state.addPersonInfo.pwd);
+      console.log("vuex.add.pwd =>", state.addPersonInfo.pwd);
     },
     AddPersonInfoUsername(state, username) {
       state.addPersonInfo.username = username;
-      console.log("vuex.add.account =>", state.addPersonInfo.username);
+      console.log("vuex.add.username =>", state.addPersonInfo.username);
     },
-    AddPersonInfoAcc(state, account) {
-      state.addPersonInfo.account = account;
-      console.log("vuex.add.account =>", state.addPersonInfo.account);
+    AddPersonInfoType(state, type) {
+      state.addPersonInfo.type = type;
+      console.log("vuex.add.type =>", state.addPersonInfo.type);
     },
     setToken(state, token) {
       localStorage.setItem("token", token);
       state.token = token;
       console.log("vuex.mugetToken =>", token);
     },
-    removeToken(state, token) {
-      localStorage.removeItem("token");
+    setToken(state, token) {
+      localStorage.setItem("token", token);
       state.token = token;
       console.log("vuex.mugetToken =>", token);
+    },
+    setUserInfo(state, { username, type }) {
+      localStorage.setItem("username", username);
+      localStorage.setItem("type", type);
+      state.userInfo.username = username;
+      state.userInfo.type = type;
+    },
+    clearLocalStorage() {
+      localStorage.clear();
     },
     changeIsLogin(state, bool) {
       state.isLogin = bool;
@@ -207,6 +201,9 @@ export default createStore({
     },
     personInfoTwo(state) {
       return state.personInfoTwo.personData;
+    },
+    addPersonInfo(state) {
+      return state.addPersonInfo;
     },
     token(state) {
       return state.token;

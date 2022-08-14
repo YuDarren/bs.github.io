@@ -1,18 +1,24 @@
 <script>
 import { computed, onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import AddPersonInfo from "@/components/AddPersonInfo.vue";
 export default {
   components: { AddPersonInfo },
   setup() {
     const store = useStore();
+    const router = useRouter();
     const isAddInfo = computed(() => {
       return store.getters.isAddInfo;
     });
     const isAddInfoBtn = () => {
       store.dispatch("handAddInfoAction");
     };
-    onMounted(() => {});
+    onMounted(() => {
+      store.dispatch("getUserInfoOne");
+      store.dispatch("getUserInfoTwo");
+      router.push("/permission/supervisor");
+    });
     return { isAddInfo, isAddInfoBtn };
   },
 };
@@ -28,8 +34,8 @@ export default {
           <router-link to="/permission/employee">業務</router-link>
         </div>
       </div>
-      <div class="addinfo_btn">
-        <button><a href="#" @click="isAddInfoBtn">新增</a></button>
+      <div class="addinfo_btn" @click="isAddInfoBtn">
+        <button><a href="#">新增</a></button>
       </div>
     </nav>
     <AddPersonInfo v-if="isAddInfo" />

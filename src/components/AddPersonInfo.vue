@@ -1,11 +1,18 @@
 <script>
+import { computed } from "@vue/runtime-core";
 import { useStore } from "vuex";
+import { apiPostAddUser } from "../api/api.js";
 export default {
   components: {},
   computed: {
     AddPersonInfoAcc: {
       get() {
-        return this.$store.state.addPersonInfo.account;
+        const reg = /^[a-zA-Z0-9]*$/;
+        if (!reg.test(this.$store.state.addPersonInfo.account)) {
+          alert("請輸入英文字母或數字");
+        } else {
+          return this.$store.state.addPersonInfo.account;
+        }
       },
       set(value) {
         this.$store.commit("AddPersonInfoAcc", value);
@@ -13,7 +20,12 @@ export default {
     },
     AddPersonInfoPwd: {
       get() {
-        return this.$store.state.addPersonInfo.pwd;
+        const reg = /^[a-zA-Z0-9]*$/;
+        if (!reg.test(this.$store.state.addPersonInfo.pwd)) {
+          alert("請輸入英文字母或數字");
+        } else {
+          return this.$store.state.addPersonInfo.pwd;
+        }
       },
       set(value) {
         this.$store.commit("AddPersonInfoPwd", value);
@@ -21,27 +33,49 @@ export default {
     },
     AddPersonInfoUsername: {
       get() {
-        return this.$store.state.addPersonInfo.username;
+        const reg = /^[a-zA-Z0-9\u4e00-\u9fa5]*$/;
+        if (!reg.test(this.$store.state.addPersonInfo.username)) {
+          alert("請輸入英文字母或數字");
+        } else {
+          return this.$store.state.addPersonInfo.username;
+        }
       },
       set(value) {
         this.$store.commit("AddPersonInfoUsername", value);
       },
     },
-    AddPersonInfo: {
+    AddPersonInfoType: {
       get() {
-        return this.$store.state.addPersonInfo.account;
+        return this.$store.state.addPersonInfo.type;
       },
       set(value) {
-        this.$store.commit("AddPersonInfo", value);
+        this.$store.commit("AddPersonInfoType", value);
       },
     },
   },
   setup() {
     const store = useStore();
-    const isAddInfoBtn = () => {
+    const addInfo = computed(() => {
+      return store.getters.addPersonInfo;
+    });
+    const options = [
+      {
+        value: 1,
+        label: "業務主管",
+      },
+      {
+        value: 2,
+        label: "業務員",
+      },
+    ];
+    const isAddInfoCancel = () => {
       store.dispatch("handAddInfoAction");
     };
-    return { isAddInfoBtn };
+    const addNewUserInfo = () => {
+      store.dispatch("handAddUserInfo");
+    };
+
+    return { isAddInfoCancel, addNewUserInfo, options };
   },
 };
 </script>
@@ -53,6 +87,7 @@ export default {
         <div class="add_input">
           新增帳號:<el-input
             v-model="AddPersonInfoAcc"
+            maxlength="8"
             type="text"
             placeholder="輸入使用者帳號"
           />
@@ -61,6 +96,7 @@ export default {
           新增密碼:
           <el-input
             v-model="AddPersonInfoPwd"
+            maxlength="8"
             type="text"
             placeholder="輸入使用者密碼"
           />
@@ -69,22 +105,30 @@ export default {
           新增姓名:
           <el-input
             v-model="AddPersonInfoUsername"
+            maxlength="8"
             type="text"
             placeholder="輸入姓名"
           />
         </div>
         <div class="add_input">
           新增職位:
-          <el-input
-            v-model="AddPersonInfoUsername"
-            type="text"
-            placeholder="輸入職位"
-          />
+          <el-select
+            v-model="AddPersonInfoType"
+            placeholder="--請選擇--"
+            clearable
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </div>
       </div>
       <div class="add_btns">
-        <el-button type="info" plain>確定</el-button>
-        <el-button type="info" plain @click="isAddInfoBtn">取消</el-button>
+        <el-button type="info" plain @click="addNewUserInfo">確定</el-button>
+        <el-button type="info" plain @click="isAddInfoCancel">取消</el-button>
       </div>
     </form>
   </div>
@@ -123,6 +167,11 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      .add_input {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+      }
       .add_input + .add_input {
         margin-top: 10px;
       }
