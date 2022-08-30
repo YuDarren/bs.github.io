@@ -50,7 +50,7 @@ export default {
   max-width: 1920px;
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+
   .per_haeder {
     display: flex;
     align-items: center;

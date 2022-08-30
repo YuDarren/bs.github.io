@@ -11,15 +11,9 @@ userRequest.interceptors.response.use(
   },
   function (error) {
     console.log("api.error: ", error);
-    if (error.response.status === 400 && error.response.data.code === 1000) {
-      alert(error.response.data.msg);
-    } else if (
-      error.response.status === 400 &&
-      error.response.data.code === 9000
-    ) {
-      alert("帳號或密碼不得為空");
-    } else if (error.response.status != 200) {
+    if (error.response.status === 403) {
       store.dispatch("handSignOutSubmit");
+      store.dispatch("handEditInfoAction");
       store.dispatch("handAddInfoAction");
     }
 
@@ -35,4 +29,7 @@ export const apiGetUserTypeOne = (token) => userRequest.get("/users/1", token);
 export const apiGetUserTypeTwo = (token) => userRequest.get("/users/2", token);
 export const apiPostAddUser = (data, token) =>
   userRequest.post("/users", data, token);
-export const apiPutRenewUser = () => userRequest.put("/users{id}");
+export const apiPutEditUser = (data, token) => {
+  const id = store.getters.editPersonInfoID;
+  return userRequest.put(`/users/${id}`, data, token);
+};

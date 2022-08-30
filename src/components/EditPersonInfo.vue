@@ -1,52 +1,53 @@
 <script>
 import { useStore } from "vuex";
+
 export default {
   computed: {
-    AddPersonInfoAcc: {
+    EditPersonInfoAcc: {
       get() {
         const reg = /^[a-zA-Z0-9]*$/;
-        if (!reg.test(this.$store.state.addPersonInfo.account)) {
+        if (!reg.test(this.$store.state.editPersonInfo.account)) {
           alert("請輸入英文字母或數字");
         } else {
-          return this.$store.state.addPersonInfo.account;
+          return this.$store.state.editPersonInfo.account;
         }
       },
       set(value) {
-        this.$store.commit("AddPersonInfoAcc", value);
+        this.$store.commit("editPersonInfoAcc", value);
       },
     },
-    AddPersonInfoPwd: {
+    EditPersonInfoPwd: {
       get() {
         const reg = /^[a-zA-Z0-9]*$/;
-        if (!reg.test(this.$store.state.addPersonInfo.pwd)) {
+        if (!reg.test(this.$store.state.editPersonInfo.pwd)) {
           alert("請輸入英文字母或數字");
         } else {
-          return this.$store.state.addPersonInfo.pwd;
+          return this.$store.state.editPersonInfo.pwd;
         }
       },
       set(value) {
-        this.$store.commit("AddPersonInfoPwd", value);
+        this.$store.commit("editPersonInfoPwd", value);
       },
     },
-    AddPersonInfoUsername: {
+    EditPersonInfoUsername: {
       get() {
         const reg = /^[a-zA-Z0-9\u4e00-\u9fa5]*$/;
-        if (!reg.test(this.$store.state.addPersonInfo.username)) {
+        if (!reg.test(this.$store.state.editPersonInfo.username)) {
           alert("請輸入英文字母或數字");
         } else {
-          return this.$store.state.addPersonInfo.username;
+          return this.$store.state.editPersonInfo.username;
         }
       },
       set(value) {
-        this.$store.commit("AddPersonInfoUsername", value);
+        this.$store.commit("editPersonInfoUsername", value);
       },
     },
-    AddPersonInfoType: {
+    EditPersonInfoType: {
       get() {
-        return this.$store.state.addPersonInfo.type;
+        return this.$store.state.editPersonInfo.type;
       },
       set(value) {
-        this.$store.commit("AddPersonInfoType", value);
+        this.$store.commit("editPersonInfoType", value);
       },
     },
   },
@@ -63,52 +64,52 @@ export default {
         label: "業務員",
       },
     ];
-    const isAddInfoCancel = () => {
-      store.dispatch("handAddInfoAction");
+    const isEditInfoCancel = () => {
+      store.dispatch("handEditInfoAction");
     };
-    const addNewUserInfo = () => {
-      store.dispatch("handAddUserInfo");
+    const handEditUserInfo = () => {
+      store.dispatch("handEditUserInfo");
     };
 
-    return { isAddInfoCancel, addNewUserInfo, options };
+    return { isEditInfoCancel, handEditUserInfo, options };
   },
 };
 </script>
 <template>
   <div class="add_block">
     <form class="add_window">
-      <div class="add_tit">新增人事資料</div>
+      <div class="add_tit">編輯人事資料</div>
       <div class="add_con">
         <div class="add_input">
-          新增帳號:<el-input
-            v-model="AddPersonInfoAcc"
+          帳號:<el-input
+            v-model="EditPersonInfoAcc"
             maxlength="8"
             type="text"
             placeholder="輸入使用者帳號"
           />
         </div>
         <div class="add_input">
-          新增密碼:
+          密碼:
           <el-input
-            v-model="AddPersonInfoPwd"
+            v-model="EditPersonInfoPwd"
             maxlength="8"
             type="text"
-            placeholder="輸入使用者密碼"
+            placeholder="若密碼無須變更，不用輸入"
           />
         </div>
         <div class="add_input">
-          新增姓名:
+          姓名:
           <el-input
-            v-model="AddPersonInfoUsername"
+            v-model="EditPersonInfoUsername"
             maxlength="8"
             type="text"
             placeholder="輸入姓名"
           />
         </div>
         <div class="add_input">
-          新增職位:
+          職位:
           <el-select
-            v-model="AddPersonInfoType"
+            v-model="EditPersonInfoType"
             placeholder="--請選擇--"
             clearable
           >
@@ -122,8 +123,8 @@ export default {
         </div>
       </div>
       <div class="add_btns">
-        <el-button type="info" plain @click="addNewUserInfo">新增</el-button>
-        <el-button type="info" plain @click="isAddInfoCancel">取消</el-button>
+        <el-button type="info" plain @click="handEditUserInfo">編輯</el-button>
+        <el-button type="info" plain @click="isEditInfoCancel">取消</el-button>
       </div>
     </form>
   </div>
