@@ -3,6 +3,7 @@ import { computed, onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import AddPersonInfo from "@/components/AddPersonInfo.vue";
+// import { ElMessage, ElMessageBox } from "element-plus";
 export default {
   components: { AddPersonInfo },
   setup() {
@@ -14,12 +15,35 @@ export default {
     const isAddInfoBtn = () => {
       store.dispatch("handAddInfoAction");
     };
+
+    // const open = () => {
+    //   ElMessageBox.prompt("Please input your e-mail", "Tip", {
+    //     confirmButtonText: "OK",
+    //     cancelButtonText: "Cancel",
+    //     inputPattern:
+    //       /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+    //     inputErrorMessage: "Invalid Email",
+    //   })
+    //     .then(({ value }) => {
+    //       ElMessage({
+    //         type: "success",
+    //         message: `Your email is:${value}`,
+    //       });
+    //     })
+    //     .catch(() => {
+    //       ElMessage({
+    //         type: "info",
+    //         message: "Input canceled",
+    //       });
+    //     });
+    // };
+
     onMounted(() => {
       store.dispatch("getUserInfoOne");
       store.dispatch("getUserInfoTwo");
       router.push("/permission/supervisor");
     });
-    return { isAddInfo, isAddInfoBtn };
+    return { isAddInfo, isAddInfoBtn, open };
   },
 };
 </script>
@@ -34,8 +58,8 @@ export default {
           <router-link to="/permission/employee">業務</router-link>
         </div>
       </div>
-      <div class="addinfo_btn" @click="isAddInfoBtn">
-        <button><a href="#">新增</a></button>
+      <div class="addinfo_btn">
+        <el-button color="#0275b1" @click="isAddInfoBtn">新增</el-button>
       </div>
     </nav>
     <AddPersonInfo v-if="isAddInfo" />
@@ -87,16 +111,10 @@ export default {
       display: flex;
       align-items: center;
 
-      button {
-        cursor: pointer;
+      .el-button {
         padding: 10px 20px;
-        background: #0275b1;
         border-radius: 4px;
         font-weight: 600;
-        border: none;
-        a {
-          color: #fff;
-        }
       }
     }
   }

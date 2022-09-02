@@ -12,9 +12,10 @@ userRequest.interceptors.response.use(
   function (error) {
     console.log("api.error: ", error);
     if (error.response.status === 403) {
-      store.dispatch("handSignOutSubmit");
-      store.dispatch("handEditInfoAction");
-      store.dispatch("handAddInfoAction");
+      store.dispatch("handCloseAllPage");
+      // store.dispatch("handSignOutSubmit");
+      // store.dispatch("handEditInfoAction");
+      // store.dispatch("handAddInfoAction");
     }
 
     return Promise.reject(error);

@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import { ElMessage } from "element-plus";
 import {
   apiPostUserLogin,
   apiGetUserTypeOne,
@@ -40,6 +41,7 @@ export default createStore({
       pwd: "",
       username: "",
       type: 0,
+      errmsg: "",
     },
     /*接收編輯資料*/
     editPersonInfo: {
@@ -92,6 +94,24 @@ export default createStore({
       context.commit("updateLoginInfoPwd", pwd);
       context.commit("changeIsLogin", bool);
     },
+    /*若token時效過期，使其登出及關閉新增及編輯頁面*/
+    handCloseAllPage(context) {
+      const bool = false;
+      const account = "";
+      const pwd = "";
+      const username = "";
+      const type = null;
+      context.commit("clearLocalStorage");
+      context.commit("updateLoginInfoAcc", account);
+      context.commit("updateLoginInfoPwd", pwd);
+      context.commit("changeIsLogin", bool);
+      context.commit("AddPersonInfoAcc", account);
+      context.commit("AddPersonInfoPwd", pwd);
+      context.commit("AddPersonInfoUsername", username);
+      context.commit("AddPersonInfoType", type);
+      context.commit("changeIsAddInfo", bool);
+      context.commit("changeIsEdit", bool);
+    },
     /*控制新增資料頁面開關按鈕*/
     handAddInfoAction(context) {
       const bool = !context.state.isAddInfo;
@@ -111,7 +131,6 @@ export default createStore({
         headers: { Authorization: localStorage.token },
       })
         .then((res) => {
-          alert("新增成功");
           const bool = !context.state.isAddInfo;
           const account = "";
           const pwd = "";
@@ -126,17 +145,18 @@ export default createStore({
           context.dispatch("getUserInfoTwo");
         })
         .catch((error) => {
-          console.log("add=>", error);
-          if (error.response.data.data[0].field === "account") {
-            alert("請輸入帳號");
-          } else if (error.response.data.data[0].field === "pwd") {
-            alert("請輸入密碼");
-          } else if (error.response.data.data[0].field === "username") {
-            alert("請輸入姓名");
-          } else if (error.response.data.data[0].field === "type") {
-            alert("請選擇職位");
-          } else if (error.response.data.code === 2000) {
-            alert("帳號已存在");
+          if (error.response.data.code === 2000) {
+            // ElMessage.error("新增失敗，帳號已存在");
+            console.log(123);
+            ElMessage({
+              message: "新增成功",
+              type: "success",
+            });
+
+            context.dispatch("");
+            //   alert("新增失敗，帳號已存在");
+            //   console.log("show2000", ElMessage.error("新增失敗，帳號已存在"));
+            //   ElMessage.error("新增失敗，帳號已存在");
           }
         });
     },
@@ -229,6 +249,11 @@ export default createStore({
       state.addPersonInfo.type = type;
       console.log("vuex.add.type =>", state.addPersonInfo.type);
     },
+    /*新增資料錯誤訊息*/
+    AddPersonInfoErrmsg(state, errmsg) {
+      state.addPersonInfo.errmsg = errmsg;
+      console.log("vuex.add.type =>", state.addPersonInfo.errmsg);
+    },
     /*編輯資料ID*/
     editPersonInfoID(state, id) {
       state.editPersonInfo.id = id;
@@ -312,15 +337,35 @@ export default createStore({
     personInfoOne(state) {
       return state.personInfoOne;
     },
-
     personInfoTwo(state) {
       return state.personInfoTwo;
     },
     editPersonInfoID(state) {
       return state.editPersonInfo.id;
     },
+    /*新增資料 */
     addPersonInfo(state) {
       return state.addPersonInfo;
+    },
+    /*新增資料帳號*/
+    addPersonInfoAcc(state) {
+      return state.addPersonInfo.account;
+    },
+    /*新增資料密碼*/
+    addPersonInfoPwd(state) {
+      return state.addPersonInfo.pwd;
+    },
+    /*新增資料使用者名稱*/
+    addPersonInfoUsername(state) {
+      return state.addPersonInfo.username;
+    },
+    /*新增資料職位*/
+    addPersonInfoType(state) {
+      return state.addPersonInfo.type;
+    },
+    /*新增資料職位*/
+    addPersonInfoErrmsg(state) {
+      return state.addPersonInfo.errmsg;
     },
     token(state) {
       return state.token;
