@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { ElMessage } from "element-plus";
+
 import {
   apiPostUserLogin,
   apiGetUserTypeOne,
@@ -7,6 +7,7 @@ import {
   apiPostAddUser,
   apiPutEditUser,
 } from "../api/api.js";
+
 // import state from "./state.js";
 // import actions from "./actions.js";
 // import mutations from "./mutations.js";
@@ -35,13 +36,14 @@ export default createStore({
     personInfoOne: [],
     /*使用者資料for業務*/
     personInfoTwo: [],
+    /*台灣縣市資料*/
+    taiwanInfo: [],
     /*接收新增資料*/
     addPersonInfo: {
       account: "",
       pwd: "",
       username: "",
       type: 0,
-      errmsg: "",
     },
     /*接收編輯資料*/
     editPersonInfo: {
@@ -63,9 +65,9 @@ export default createStore({
   },
   actions: {
     /*控制登入及存取api的token*/
-    handLoginSubmit(context) {
-      apiPostUserLogin(context.state.loginInfo)
-        .then((res) => {
+    async handLoginSubmit(context) {
+      try {
+        await apiPostUserLogin(context.state.loginInfo).then((res) => {
           const token = res.data.token;
           const username = res.data.username;
           const type = res.data.type;
@@ -73,16 +75,14 @@ export default createStore({
           context.commit("setUserInfo", { username, type });
           context.commit("changeIsLogin", bool);
           context.commit("setToken", token);
-          // console.log("vuex.actions.login", res);
-        })
-        .catch((err) => {
-          console.log(err);
-          if (err.response.data.code === 1000) {
-            alert(err.response.data.msg);
-          } else if (err.response.data.code === 9000) {
-            alert("請輸入帳號或密碼");
-          }
         });
+      } catch (error) {
+        if (error.response.data.code === 1000) {
+          return Promise.reject(error.response.data.msg);
+        } else if (error.response.data.code === 9000) {
+          return Promise.reject("請輸入帳號或密碼");
+        }
+      }
     },
     /*控制登出*/
     handSignOutSubmit(context) {
@@ -104,7 +104,7 @@ export default createStore({
       context.commit("clearLocalStorage");
       context.commit("updateLoginInfoAcc", account);
       context.commit("updateLoginInfoPwd", pwd);
-      context.commit("changeIsLogin", bool);
+      context.commit("changeIsLogin", !bool);
       context.commit("AddPersonInfoAcc", account);
       context.commit("AddPersonInfoPwd", pwd);
       context.commit("AddPersonInfoUsername", username);
@@ -126,39 +126,30 @@ export default createStore({
       context.commit("changeIsAddInfo", bool);
     },
     /*新增資料按鈕*/
-    handAddUserInfo(context) {
-      apiPostAddUser(this.state.addPersonInfo, {
-        headers: { Authorization: localStorage.token },
-      })
-        .then((res) => {
-          const bool = !context.state.isAddInfo;
-          const account = "";
-          const pwd = "";
-          const username = "";
-          const type = null;
-          context.commit("AddPersonInfoAcc", account);
-          context.commit("AddPersonInfoPwd", pwd);
-          context.commit("AddPersonInfoUsername", username);
-          context.commit("AddPersonInfoType", type);
-          context.commit("changeIsAddInfo", bool);
-          context.dispatch("getUserInfoOne");
-          context.dispatch("getUserInfoTwo");
-        })
-        .catch((error) => {
-          if (error.response.data.code === 2000) {
-            // ElMessage.error("新增失敗，帳號已存在");
-            console.log(123);
-            ElMessage({
-              message: "新增成功",
-              type: "success",
-            });
-
-            context.dispatch("");
-            //   alert("新增失敗，帳號已存在");
-            //   console.log("show2000", ElMessage.error("新增失敗，帳號已存在"));
-            //   ElMessage.error("新增失敗，帳號已存在");
-          }
+    async handAddUserInfo(context) {
+      try {
+        await apiPostAddUser(this.state.addPersonInfo, {
+          headers: { Authorization: localStorage.token },
         });
+        const bool = !context.state.isAddInfo;
+        const account = "";
+        const pwd = "";
+        const username = "";
+        const type = null;
+        context.commit("AddPersonInfoAcc", account);
+        context.commit("AddPersonInfoPwd", pwd);
+        context.commit("AddPersonInfoUsername", username);
+        context.commit("AddPersonInfoType", type);
+        context.commit("changeIsAddInfo", bool);
+        context.dispatch("getUserInfoOne");
+        context.dispatch("getUserInfoTwo");
+      } catch (error) {
+        if (error.response.data.code === 2000) {
+          return Promise.reject("新增失敗，帳號已存在");
+        } else {
+          return Promise.reject("欄位不得為空");
+        }
+      }
     },
     /*控制編輯資料頁面開關按鈕*/
     handEditInfoAction(context) {
@@ -166,32 +157,25 @@ export default createStore({
       context.commit("changeIsEdit", bool);
     },
     /*編輯資料按鈕*/
-    handEditUserInfo(context) {
+    async handEditUserInfo(context) {
       const arr = context.state.editPersonInfo;
-      apiPutEditUser(arr, {
-        headers: { Authorization: localStorage.token },
-      })
-        .then(() => {
-          alert("編輯成功");
-          const bool = !context.state.isEdit;
-          const pwd = "";
-          context.commit("changeIsEdit", bool);
-          context.commit("editPersonInfoPwd", pwd);
-          context.dispatch("getUserInfoOne");
-          context.dispatch("getUserInfoTwo");
-        })
-        .catch((error) => {
-          console.log("edit.err", error);
-          if (error.response.data.code === 2000) {
-            alert(error.response.data.msg);
-          } else if (error.response.data.data[0].field === "account") {
-            alert("帳號內容為空");
-          } else if (error.response.data.data[0].field === "username") {
-            alert("姓名內容為空");
-          } else if (error.response.data.data[0].field === "type") {
-            alert("請選擇職位");
-          }
+      try {
+        await apiPutEditUser(arr, {
+          headers: { Authorization: localStorage.token },
         });
+        const bool = !context.state.isEdit;
+        const pwd = "";
+        context.commit("changeIsEdit", bool);
+        context.commit("editPersonInfoPwd", pwd);
+        context.dispatch("getUserInfoOne");
+        context.dispatch("getUserInfoTwo");
+      } catch (error) {
+        if (error.response.data.code === 2000) {
+          return Promise.reject("編輯失敗，帳號已存在");
+        } else {
+          return Promise.reject("欄位不得為空");
+        }
+      }
     },
     /*取得使用者資料for主管*/
     getUserInfoOne(context) {
@@ -215,24 +199,25 @@ export default createStore({
   mutations: {
     updateLoginInfoAcc(state, account) {
       state.loginInfo.account = account;
-      console.log("vuex.muacc.acc =>", account);
     },
     updateLoginInfoPwd(state, pwd) {
       state.loginInfo.pwd = pwd;
-      console.log("vuex.mupwd.pwd =>", pwd);
     },
+    /*更新主管資料*/
     updatePersonInfoOne(state, payload) {
       state.personInfoOne = payload;
-      console.log("vuex.muper1.payload =>", payload);
     },
+    /*更新員工資料*/
     updatePersonInfoTwo(state, payload) {
       state.personInfoTwo = payload;
-      console.log("vuex.muper2.payload =>", payload);
+    },
+    /*更新員工資料*/
+    getTaiwanInfo(state, payload) {
+      state.taiwanInfo = payload;
     },
     /*新增資料帳號*/
     AddPersonInfoAcc(state, account) {
       state.addPersonInfo.account = account;
-      console.log("vuex.add.account =>", state.addPersonInfo.account);
     },
     /*新增資料密碼*/
     AddPersonInfoPwd(state, pwd) {
@@ -242,51 +227,38 @@ export default createStore({
     /*新增資料使用者名稱*/
     AddPersonInfoUsername(state, username) {
       state.addPersonInfo.username = username;
-      console.log("vuex.add.username =>", state.addPersonInfo.username);
     },
     /*新增資料類別*/
     AddPersonInfoType(state, type) {
       state.addPersonInfo.type = type;
-      console.log("vuex.add.type =>", state.addPersonInfo.type);
-    },
-    /*新增資料錯誤訊息*/
-    AddPersonInfoErrmsg(state, errmsg) {
-      state.addPersonInfo.errmsg = errmsg;
-      console.log("vuex.add.type =>", state.addPersonInfo.errmsg);
     },
     /*編輯資料ID*/
     editPersonInfoID(state, id) {
       state.editPersonInfo.id = id;
-      console.log("vuex.edit.id =>", state.editPersonInfo.id);
     },
     /*編輯資料帳號*/
     editPersonInfoAcc(state, account) {
       state.editPersonInfo.account = account;
       state.editPersonInfoNopwd.account = account;
-      console.log("vuex.edit.account =>", state.editPersonInfo.account);
     },
     /*編輯資料密碼*/
     editPersonInfoPwd(state, pwd) {
       state.editPersonInfo.pwd = pwd;
-      console.log("vuex.edit.pwd =>", state.editPersonInfo.pwd);
     },
     /*編輯資料使用者名稱*/
     editPersonInfoUsername(state, username) {
       state.editPersonInfo.username = username;
       state.editPersonInfoNopwd.username = username;
-      console.log("vuex.edit.username =>", state.editPersonInfo.username);
     },
     /*編輯資料類別*/
     editPersonInfoType(state, type) {
       state.editPersonInfo.type = type;
       state.editPersonInfoNopwd.type = type;
-      console.log("vuex.edit.type =>", state.editPersonInfo.type);
     },
     /*存取api的token至localStorage*/
     setToken(state, token) {
       localStorage.setItem("token", token);
       state.token = token;
-      console.log("vuex.mugetToken =>", token);
     },
     /*存取使用者名稱及職位至localStorage*/
     setUserInfo(state, { username, type }) {
@@ -299,17 +271,15 @@ export default createStore({
     clearLocalStorage() {
       localStorage.clear();
     },
+    /* */
     changeIsLogin(state, bool) {
       state.isLogin = bool;
-      console.log("vuex.mulogin =>", bool);
     },
     changeIsAddInfo(state, bool) {
       state.isAddInfo = bool;
-      console.log("vuex.mulogin =>", bool);
     },
     changeIsEdit(state, bool) {
       state.isEdit = bool;
-      console.log("vuex.mulogin =>", bool);
     },
   },
   getters: {
@@ -362,10 +332,6 @@ export default createStore({
     /*新增資料職位*/
     addPersonInfoType(state) {
       return state.addPersonInfo.type;
-    },
-    /*新增資料職位*/
-    addPersonInfoErrmsg(state) {
-      return state.addPersonInfo.errmsg;
     },
     token(state) {
       return state.token;

@@ -3,7 +3,7 @@ import { computed, onMounted } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import AddPersonInfo from "@/components/AddPersonInfo.vue";
-// import { ElMessage, ElMessageBox } from "element-plus";
+
 export default {
   components: { AddPersonInfo },
   setup() {
@@ -15,28 +15,6 @@ export default {
     const isAddInfoBtn = () => {
       store.dispatch("handAddInfoAction");
     };
-
-    // const open = () => {
-    //   ElMessageBox.prompt("Please input your e-mail", "Tip", {
-    //     confirmButtonText: "OK",
-    //     cancelButtonText: "Cancel",
-    //     inputPattern:
-    //       /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-    //     inputErrorMessage: "Invalid Email",
-    //   })
-    //     .then(({ value }) => {
-    //       ElMessage({
-    //         type: "success",
-    //         message: `Your email is:${value}`,
-    //       });
-    //     })
-    //     .catch(() => {
-    //       ElMessage({
-    //         type: "info",
-    //         message: "Input canceled",
-    //       });
-    //     });
-    // };
 
     onMounted(() => {
       store.dispatch("getUserInfoOne");

@@ -4,18 +4,14 @@ import axios from "axios";
 const userRequest = axios.create({
   baseURL: "http://116.241.112.119:4862/",
 });
+
 userRequest.interceptors.response.use(
   function (res) {
-    console.log("api.res: ", res);
     return res;
   },
   function (error) {
-    console.log("api.error: ", error);
     if (error.response.status === 403) {
       store.dispatch("handCloseAllPage");
-      // store.dispatch("handSignOutSubmit");
-      // store.dispatch("handEditInfoAction");
-      // store.dispatch("handAddInfoAction");
     }
 
     return Promise.reject(error);

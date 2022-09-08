@@ -53,7 +53,7 @@ export default {
       type: [{ required: true, message: "請選擇職位", trigger: "blur" }],
     });
 
-    const submitForm = (ruleFormRef) => {
+    const submitForm = async (ruleFormRef) => {
       const account = ruleForm.account;
       const pwd = ruleForm.pwd;
       const username = ruleForm.username;
@@ -63,21 +63,21 @@ export default {
       store.commit("AddPersonInfoUsername", username);
       store.commit("AddPersonInfoType", type);
       if (!ruleFormRef) return;
-      console.log("送出過if", store.state.addPersonInfo);
-
-      ruleFormRef.validate((valid) => {
-        if (valid) {
-          store.dispatch("handAddUserInfo");
-        } else {
-          ElMessage({
-            message: "新增成功",
-            type: "success",
-            customClass: "el-msg",
-            duration: 0,
-          });
-          return false;
-        }
-      });
+      try {
+        await store.dispatch("handAddUserInfo");
+        ElMessage({
+          message: "新增成功",
+          type: "success",
+          customClass: "el-msg",
+        });
+      } catch (error) {
+        console.log(error);
+        ElMessage({
+          message: error,
+          type: "error",
+          customClass: "el-msg",
+        });
+      }
     };
 
     const resetForm = (ruleFormRef) => {
@@ -86,16 +86,11 @@ export default {
     };
 
     const isAddInfoCancel = () => {
-      ElMessage.error("新增失敗，帳號已存在");
       store.dispatch("handAddInfoAction");
-    };
-    const addNewUserInfo = () => {
-      store.dispatch("handAddUserInfo");
     };
 
     return {
       isAddInfoCancel,
-      addNewUserInfo,
       options,
       rules,
       resetForm,
@@ -164,63 +159,15 @@ export default {
         <el-button @click="isAddInfoCancel">取消</el-button>
       </el-form-item>
     </el-form>
-
-    <!-- <form class="add_window">
-      <div class="add_tit">新增人事資料</div>
-      <div class="add_con">
-        <div class="add_input">
-          新增帳號:<el-input
-            v-model="AddPersonInfoAcc"
-            maxlength="8"
-            type="text"
-            placeholder="輸入使用者帳號"
-          />
-        </div>
-        <div class="add_input">
-          新增密碼:
-          <el-input
-            v-model="AddPersonInfoPwd"
-            maxlength="8"
-            type="text"
-            placeholder="輸入使用者密碼"
-          />
-        </div>
-        <div class="add_input">
-          新增姓名:
-          <el-input
-            v-model="AddPersonInfoUsername"
-            maxlength="8"
-            type="text"
-            placeholder="輸入姓名"
-          />
-        </div>
-        <div class="add_input">
-          新增職位:
-          <el-select
-            v-model="AddPersonInfoType"
-            placeholder="--請選擇--"
-            clearable
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
-        </div>
-      </div>
-      <div class="add_btns">
-        <el-button type="info" plain @click="addNewUserInfo">新增</el-button>
-        <el-button type="info" plain @click="isAddInfoCancel">取消</el-button>
-      </div>
-    </form> -->
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
 .el-msg {
   z-index: 999 !important;
 }
+</style>
+
+<style lang="scss" scoped>
 .add_block {
   width: 100%;
   height: 100%;

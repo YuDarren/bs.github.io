@@ -13,7 +13,6 @@ export default {
       return store.getters.isEdit;
     });
     const handEditInfoAction = (item) => {
-      console.log("item=>", item);
       const id = item.id;
       const account = item.account;
       const username = item.username;

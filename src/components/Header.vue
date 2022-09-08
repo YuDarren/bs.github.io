@@ -25,13 +25,13 @@ export default {
   <header>
     <div class="head">
       <div class="head_left">
-        <div class="head_tit"><h2>Backend System</h2></div>
+        <div class="head_tit"><h2>房屋後臺系統</h2></div>
         <div class="head_btns">
           <div class="btn">
-            <router-link to="/permission">Permission</router-link>
+            <router-link to="/permission">人事管理</router-link>
           </div>
           <div class="btn">
-            <router-link to="/commodity">Commodity</router-link>
+            <router-link to="/commodity">物件管理</router-link>
           </div>
         </div>
       </div>
