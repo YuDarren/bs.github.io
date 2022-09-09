@@ -2,7 +2,7 @@ import store from "@/store";
 import axios from "axios";
 
 const userRequest = axios.create({
-  baseURL: "http://116.241.112.119:4862/",
+  baseURL: "https://86cc-116-241-112-119.jp.ngrok.io/",
 });
 
 userRequest.interceptors.response.use(
