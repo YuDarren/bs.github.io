@@ -2,8 +2,8 @@ import { createStore } from "vuex";
 
 import {
   apiPostUserLogin,
-  apiGetUserTypeOne,
-  apiGetUserTypeTwo,
+  apiPostUserTypeOne,
+  apiPostUserTypeTwo,
   apiPostAddUser,
   apiPutEditUser,
 } from "../api/api.js";
@@ -75,6 +75,7 @@ export default createStore({
           context.commit("setUserInfo", { username, type });
           context.commit("changeIsLogin", bool);
           context.commit("setToken", token);
+          console.log("login", res);
         });
       } catch (error) {
         if (error.response.data.code === 1000) {
@@ -179,7 +180,7 @@ export default createStore({
     },
     /*取得使用者資料for主管*/
     getUserInfoOne(context) {
-      apiGetUserTypeOne({
+      apiPostUserTypeOne(null, {
         headers: { Authorization: localStorage.token },
       }).then((res) => {
         const arr = res.data;
@@ -188,7 +189,7 @@ export default createStore({
     },
     /*取得使用者資料for業務*/
     getUserInfoTwo(context) {
-      apiGetUserTypeTwo({
+      apiPostUserTypeTwo(null, {
         headers: { Authorization: localStorage.token },
       }).then((res) => {
         const arr = res.data;

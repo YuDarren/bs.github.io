@@ -2,7 +2,7 @@ import store from "@/store";
 import axios from "axios";
 
 const userRequest = axios.create({
-  baseURL: "https://86cc-116-241-112-119.jp.ngrok.io/",
+  baseURL: "https://a4ad-116-241-112-119.jp.ngrok.io",
 });
 
 userRequest.interceptors.response.use(
@@ -22,8 +22,10 @@ userRequest.interceptors.response.use(
 export const apiPostUserLogin = (data) => userRequest.post("/login", data);
 
 // 使用者 相關 api
-export const apiGetUserTypeOne = (token) => userRequest.get("/users/1", token);
-export const apiGetUserTypeTwo = (token) => userRequest.get("/users/2", token);
+export const apiPostUserTypeOne = (data, token) =>
+  userRequest.post("/users/1", data, token);
+export const apiPostUserTypeTwo = (data, token) =>
+  userRequest.post("/users/2", data, token);
 export const apiPostAddUser = (data, token) =>
   userRequest.post("/users", data, token);
 export const apiPutEditUser = (data, token) => {
