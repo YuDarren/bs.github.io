@@ -42,7 +42,7 @@ export default {
       if (!ruleFormRef) return;
       try {
         await store.dispatch("handLoginSubmit");
-
+        router.push("/permission/supervisor");
         ElMessage({
           message: "登入成功",
           type: "success",

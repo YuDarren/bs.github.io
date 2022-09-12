@@ -2,15 +2,18 @@
 import { User, Right } from "@element-plus/icons-vue";
 import { useStore } from "vuex";
 import { Type } from "../constants";
+import { useRouter } from "vue-router";
 export default {
   components: { User, Right },
   setup() {
     const store = useStore();
+    const router = useRouter();
     const typeConst = Type;
     const userName = localStorage.username;
     const userType = localStorage.type;
     const handSignOutBtn = () => {
       store.dispatch("handSignOutSubmit");
+      router.push("/");
     };
     return {
       handSignOutBtn,

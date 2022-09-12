@@ -1,5 +1,6 @@
 import store from "@/store";
 import axios from "axios";
+import router from "vue-router";
 
 const userRequest = axios.create({
   baseURL: "https://a4ad-116-241-112-119.jp.ngrok.io",
@@ -12,6 +13,7 @@ userRequest.interceptors.response.use(
   function (error) {
     if (error.response.status === 403) {
       store.dispatch("handCloseAllPage");
+      router.push("/");
     }
 
     return Promise.reject(error);
