@@ -11,8 +11,8 @@ export default {
     const ruleFormRef = ref();
 
     const ruleForm = reactive({
-      account: "",
-      pwd: "",
+      account: "admin",
+      pwd: "1234",
     });
 
     const rules = reactive({
@@ -92,7 +92,7 @@ export default {
       <el-form-item label="密碼:" prop="pwd" class="item">
         <el-input
           v-model="ruleForm.pwd"
-          type="text"
+          type="password"
           autocomplete="off"
           maxlength="8"
           placeholder="輸入密碼"
