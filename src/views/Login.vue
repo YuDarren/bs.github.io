@@ -130,7 +130,7 @@ export default {
     border-radius: 10px;
     padding: 20px;
     line-height: 1.5;
-    border: 2px solid #fff;
+    border: 3px solid #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
