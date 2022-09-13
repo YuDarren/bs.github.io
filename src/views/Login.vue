@@ -118,18 +118,19 @@ export default {
 </style>
 <style lang="scss" scoped>
 .page {
-  background: #0000c6;
+  background: #0275b1;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   .login {
-    background: #000093;
+    background: #0275b1;
     width: 300px;
     height: 300px;
     border-radius: 10px;
     padding: 20px;
     line-height: 1.5;
+    border: 2px solid #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
