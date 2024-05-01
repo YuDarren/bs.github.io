@@ -3,7 +3,7 @@ import axios from "axios";
 import router from "vue-router";
 
 const userRequest = axios.create({
-  baseURL: "https://38f0-123-240-238-24.ngrok-free.app/",
+  baseURL: "https://a3e5-123-240-238-24.ngrok-free.app/",
 });
 
 userRequest.interceptors.response.use(
